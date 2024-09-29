@@ -7,7 +7,10 @@ export const Home = () => (
 			<ul className="list-group border-none">
 				<li className="list-group-item">
 					<p>Prueba</p>
+					<i className="fa-solid fa-pencil"></i>
+					<i className="fa-solid fa-trash-can"></i>
 				</li>
 			</ul>
 	</div>
+
 );
