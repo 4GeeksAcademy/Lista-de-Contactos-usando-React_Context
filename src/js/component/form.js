@@ -26,7 +26,7 @@ export const Form = (props) => (
 			</div>
 			<button type="submit" className="btn btn-primary w-100">save</button>
             <Link to="/home">
-			<div id="bottomHelp" class="form-text">or get back to contacts</div>
+				<button type="button" className="btn btn-link p-0">or get back to contacts</button>
             </Link>
 		</form>
 	</div>
