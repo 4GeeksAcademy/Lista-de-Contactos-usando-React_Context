@@ -41,7 +41,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 				});
 				
-				if (resp.status === 404) {
+				if (resp.status === 422) {
 					console.log("No se puede crear el contacto");
 				}
 				
@@ -52,31 +52,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			
-			updateContact: async () => {
-				let resp = await fetch("https://playground.4geeks.com/contact/agendas/juanpablo", {
+			updateContact: async ( id, fullName, phone, email, address ) => {
+				let resp = await fetch(`https://playground.4geeks.com/contact/agendas/juanpablo/${id}`, {
 					method: "PUT",
 					headers: {
 						"Content-Type": "application/json",
 					},
 					body: JSON.stringify({ 
-						"name": "{ variable }",
-						"phone": "{ variable }",
-						"email": "{ variable }",
-						"address": "{ variable }"
+						name: fullName,
+						phone: phone,
+						email: email,
+						address: address
 					})
 				});
-				if (resp.status === 404) {
-					await fetch("https://playground.4geeks.com/contact/agendas/juanpablo", {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-						}
-					});
+				if (resp.status === 422) {
+					console.log("No se puede crear el contacto");
 				}
-				if (resp.status === 200) {
+				
+				if (resp.ok) {
 					let data = await resp.json();
 					console.log({ data });
-					setStore({contacts:data});
+					setStore({ contacts: data.contacts }); 
 				}
 			},
 			deleteContact: async (id) => {

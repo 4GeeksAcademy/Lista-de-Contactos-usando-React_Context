@@ -13,9 +13,10 @@ export const Form = (props) => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault(); // Evita el comportamiento por defecto del formulario
-
+		if (fullName == "") return
 		// Crear un nuevo contacto
 		await actions.createNewContact({ fullName, phone, email, address });
+		await actions.getContactsList()
 
 	};
 
@@ -69,10 +70,10 @@ export const Form = (props) => {
 					/>
 				</div>
 				<button type="submit" className="btn btn-primary w-100">save</button>
-				<Link to="/home">
-					<button type="button" className="btn btn-link p-0">or get back to contacts</button>
-				</Link>
 			</form>
+			<Link to="/">
+					<button type="button" className="btn btn-link p-0">or get back to contacts</button>
+			</Link>
 		</div>
 	);
 };
