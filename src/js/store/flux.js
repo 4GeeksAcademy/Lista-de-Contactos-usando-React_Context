@@ -1,53 +1,57 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			contacts: []
+				contacts:[]
 		},
-
 		actions: {
+
 			getContactsList: async () => {
-				let resp = await fetch("https://playground.4geeks.com/contact/agendas/juanpablo", {
-					method: "GET",
-					headers: {
-						"Content-Type": "application/json",
-					}
-				});
-				if (resp.status === 404) {
-					await fetch("https://playground.4geeks.com/contact/agendas/juanpablo", {
-						method: "POST",
+				try {
+					let resp = await fetch("https://playground.4geeks.com/contact/agendas/juanpablo/contacts", {
+						method: "GET",
 						headers: {
 							"Content-Type": "application/json",
 						}
 					});
-				}
-				if (resp.status === 200) {
-					let data = await resp.json();
-					console.log({ data });
-					setStore({contacts:data});
+			
+					if (resp.ok) {
+						let data = await resp.json();
+						setStore({ contacts: data.contacts || [] });
+					} else {
+						console.error("Error al obtener la lista de contactos:", resp.statusText);
+						setStore({ contacts: [] });
+					}
+				} catch (error) {
+					console.error("Error en getContactsList:", error);
+					setStore({ contacts: [] });
 				}
 			},
-			createNewContact: async () => {
+			
+			createNewContact: async ({ fullName, phone, email, address }) => {
 				let resp = await fetch("https://playground.4geeks.com/contact/agendas/juanpablo/contacts", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: JSON.stringify({ 
-						"name": "{ variable }",
-						"phone": "{ variable }",
-						"email": "{ variable }",
-						"address": "{ variable }"
+					body: JSON.stringify({
+						name: fullName,
+						phone: phone,
+						email: email,
+						address: address
 					})
 				});
+				
 				if (resp.status === 404) {
-					console.log("No se puede crear el contacto")
+					console.log("No se puede crear el contacto");
 				}
-				if (resp.status === 200) {
+				
+				if (resp.ok) {
 					let data = await resp.json();
 					console.log({ data });
-					setStore({contacts:data});
+					setStore({ contacts: data.contacts }); 
 				}
 			},
+			
 			updateContact: async () => {
 				let resp = await fetch("https://playground.4geeks.com/contact/agendas/juanpablo", {
 					method: "PUT",
