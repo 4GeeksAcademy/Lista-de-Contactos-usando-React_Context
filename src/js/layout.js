@@ -35,8 +35,8 @@ const Layout = () => {
 					<Routes>
 						<Route path="/" element={<Home />} />
 						<Route path="/demo" element={<Demo />} />
-						<Route path="/form/:idContact" element={<Form />} />
-						<Route path="/form" element={<Form />} />
+						<Route path="/update/:idContact" element={<Form />} />
+						<Route path="/create" element={<Form />} />
 						<Route path="*" element={<h1>Not found!</h1>} />
 					</Routes>
 					<Footer properties={footerData}/>

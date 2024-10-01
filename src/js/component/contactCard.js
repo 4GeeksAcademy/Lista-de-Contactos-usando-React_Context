@@ -3,28 +3,28 @@ import { Context } from "../store/appContext";
 import { faEnvelope, faLocationDot, faPencilAlt, faPhoneFlip, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Modal } from "./modal";
 
 export const ContactCard = (props) => {
 	const { store } = useContext(Context);
+    const navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false);
 
-    const [fullName, setFullName] = useState("");
-	const [email, setEmail]       = useState("");
-	const [phone, setPhone]       = useState("");
-	const [address, setAddress]   = useState("");
-	const [id, setId]             = useState("");
 
-    const handleEdit = (contact) => {
-        // Aquí puedes definir cómo manejar la edición, por ejemplo, mostrar un formulario
-        console.log("Editando contacto:", contact);
+    const openModal = () => {
+        setShowModal(true)
+    } 
+
+    const closeModal = () => {
+        setShowModal(false)
+    }
+
+    const handleDelete = (contact) => {
+        contact.preventDefault();
+        
+        console.log("Borrando contacto:", contact);
     };
-
-	const handleSubmit = async (e) => {
-		e.preventDefault(); 
-		await actions.updateContact({ fullName, phone, email, address, id });
-		await actions.getContactsList()
-
-	};
 
 	return (
         <div className="container justify-content-center ">
@@ -51,10 +51,10 @@ export const ContactCard = (props) => {
                             </div>
                             <div className="col-md-4 col-sm-4">
                                 <div className="text-end">
-                                    <Link to="/form">
-                                    <FontAwesomeIcon icon={faPencilAlt} className="me-5" onClick={() => handleEdit(contact)}  />
+                                    <Link to={`/update/${contact.id}`}>
+                                        <FontAwesomeIcon icon={faPencilAlt} className="me-5" onClick={() => handleEdit(contact.id)}  />
                                     </Link>
-                                    <FontAwesomeIcon icon={faTrashAlt} className="me-2" />
+                                    <FontAwesomeIcon icon={faTrashAlt} className="me-2" onClick={() => openModal()} />
                                 </div>
                             </div>
                         </div>
@@ -65,6 +65,7 @@ export const ContactCard = (props) => {
                     </div>
                 )}
             </div>
+            <Modal showmodal={showModal} handleClose={closeModal}/>
         </div>
 	);
 };

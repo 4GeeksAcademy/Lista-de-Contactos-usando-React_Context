@@ -6,14 +6,10 @@ import PropTypes from "prop-types";
 
 export const Buttom = (props) => (
     <div className="container mb-3 d-flex justify-content-end">
-        <Link to="/form">
+        <Link to="/create">
             <button type="button" className="btn btn-success ">Add new contact</button>
         </Link>
     </div>
 
 
 );
-
-Buttom.propTypes = {
-        name: PropTypes.string,
-};

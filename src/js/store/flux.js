@@ -70,12 +70,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 				if (resp.ok) {
 					let data = await resp.json();
 					console.log({ data });
-					setStore({ contacts: data.contacts }); 
+					setStore({ contacts: data.contacts });
 				}
 			},
 			
 			updateContact: async ( id, fullName, phone, email, address ) => {
-				let resp = await fetch(`https://playground.4geeks.com/contact/agendas/juanpablo/${id}`, {
+				let resp = await fetch(`https://playground.4geeks.com/contact/agendas/juanpablo/contacts/${id}`, {
 					method: "PUT",
 					headers: {
 						"Content-Type": "application/json",

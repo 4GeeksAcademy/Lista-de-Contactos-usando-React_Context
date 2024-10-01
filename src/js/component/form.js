@@ -6,21 +6,37 @@ import PropTypes from "prop-types";
 export const Form = (props) => {
 	const { store, actions } = useContext(Context);
 
+	const { idContact } = useParams();
+	const [currentContact, setCurrentContact] = useState(null);
 	const [fullName, setFullName] = useState("");
-	const [email, setEmail]       = useState("");
-	const [phone, setPhone]       = useState("");
-	const [address, setAddress]   = useState("");
-	const { idContact }           = useParams();
-	const [currentContact, setCurrentContact] = useState()
-
+	const [email, setEmail] = useState("");
+	const [phone, setPhone] = useState("");
+	const [address, setAddress] = useState("");
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log(handleSubmit)
-		await actions.createNewContact({ fullName, phone, email, address})
-		await actions.getContactsList()
+		if (currentContact) {
+			await actions.updateContact(currentContact.id, fullName, phone, email, address );
+		} else {
+			await actions.createNewContact({ fullName, phone, email, address });
+			setFullName("")
+			setEmail("")
+			setPhone("")
+			setAddress("")
+		}
+		await actions.getContactsList();
 	};
 
+	useEffect( () => {
+		if(idContact){
+			let contacto = store.contacts.find((c) => c.id == idContact)
+			setCurrentContact(contacto)
+			setFullName(contacto.name)
+			setEmail(contacto.email)
+			setPhone(contacto.phone)
+			setAddress(contacto.address)
+		}
+	}, [idContact])
 
 	return (
 		<div className="container justify-content-center">
@@ -82,13 +98,12 @@ export const Form = (props) => {
 				<button type="button" className="btn btn-link p-0">Or get back to contacts</button>
 			</Link>
 		</div>
-
 	);
 };
 
 Form.propTypes = {
 	fullName: PropTypes.string,
 	email: PropTypes.string,
-	phone: PropTypes.number,
+	phone: PropTypes.string, // Cambiado a string para evitar errores en el input
 	address: PropTypes.string,
 };
