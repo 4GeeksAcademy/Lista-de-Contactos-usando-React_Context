@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
 import { faEnvelope, faLocationDot, faPencilAlt, faPhoneFlip, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 
 export const ContactCard = (props) => {
 	const { store } = useContext(Context);
@@ -13,6 +14,10 @@ export const ContactCard = (props) => {
 	const [address, setAddress]   = useState("");
 	const [id, setId]             = useState("");
 
+    const handleEdit = (contact) => {
+        // Aquí puedes definir cómo manejar la edición, por ejemplo, mostrar un formulario
+        console.log("Editando contacto:", contact);
+    };
 
 	const handleSubmit = async (e) => {
 		e.preventDefault(); 
@@ -46,7 +51,9 @@ export const ContactCard = (props) => {
                             </div>
                             <div className="col-md-4 col-sm-4">
                                 <div className="text-end">
-                                    <FontAwesomeIcon icon={faPencilAlt} className="me-5"  onClick={(e)} />
+                                    <Link to="/form">
+                                    <FontAwesomeIcon icon={faPencilAlt} className="me-5" onClick={() => handleEdit(contact)}  />
+                                    </Link>
                                     <FontAwesomeIcon icon={faTrashAlt} className="me-2" />
                                 </div>
                             </div>

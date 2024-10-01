@@ -14,6 +14,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}
 					});
 			
+					if (resp.status === 404) {
+						console.log("Agenda no encontrada, creando nueva agenda...");
+						let createResp = await fetch("https://playground.4geeks.com/contact/agendas/juanpablo", {        
+							method: "POST", 
+							headers: {
+								"Content-Type": "application/json",
+							}
+						});
+						if (!createResp.ok) {
+							console.error("Error al crear la agenda:", createResp.statusText);
+							return; 
+						}
+						console.log("Agenda creada exitosamente.");
+						resp = await fetch("https://playground.4geeks.com/contact/agendas/juanpablo/contacts", {
+							method: "GET",
+							headers: {
+								"Content-Type": "application/json",
+							}
+						});
+					}
+			
 					if (resp.ok) {
 						let data = await resp.json();
 						setStore({ contacts: data.contacts || [] });
@@ -26,6 +47,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ contacts: [] });
 				}
 			},
+			
 			
 			createNewContact: async ({ fullName, phone, email, address }) => {
 				let resp = await fetch("https://playground.4geeks.com/contact/agendas/juanpablo/contacts", {
