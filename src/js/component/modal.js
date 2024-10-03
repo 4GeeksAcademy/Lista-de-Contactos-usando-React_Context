@@ -20,9 +20,9 @@ export const Modal = (props) => {
                 <button
                   type="button"
                   className="btn-close"
-                  onClick={props.handleClose}
+                  onClick={props.handlerClose}
                   aria-label="Close"
-                >x</button>
+                ></button>
               </div>
               <div className="modal-body">
                 <p>
@@ -34,7 +34,7 @@ export const Modal = (props) => {
                 <button
                   type="button"
                   className="btn btn-primary"
-                  onClick={props.handleClose}
+                  onClick={props.handlerClose}
                 >
                   Oh no!
                 </button>
@@ -56,6 +56,6 @@ export const Modal = (props) => {
 
 Modal.propTypes = {
   showmodal: PropTypes.bool,
-  handleClose: PropTypes.func,
+  handlerClose: PropTypes.func,
   handlerDelete: PropTypes.func,
 };

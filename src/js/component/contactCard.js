@@ -3,27 +3,30 @@ import { Context } from "../store/appContext";
 import { faEnvelope, faLocationDot, faPencilAlt, faPhoneFlip, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useActionData, useNavigate } from "react-router-dom";
 import { Modal } from "./modal";
 
 export const ContactCard = (props) => {
-	const { store } = useContext(Context);
+	const { store, actions } = useContext(Context);
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
+    const [contactId, setContactId] = useState(null);
 
-
-    const openModal = () => {
+    const openModal = (id) => {
+        setContactId(id);
         setShowModal(true)
-    } 
+    }
 
     const closeModal = () => {
         setShowModal(false)
     }
 
-    const handleDelete = (contact) => {
-        contact.preventDefault();
-        
-        console.log("Borrando contacto:", contact);
+    const HandlerDelete = async (id) => {
+        if (contactId) {
+            await actions.deleteContact(id);
+        }
+        closeModal();
+        await actions.getContactsList();
     };
 
 	return (
@@ -39,22 +42,22 @@ export const ContactCard = (props) => {
                                 <h5>{contact.name}</h5>
                                 <ul className="list-group border-none d-flex align-items-start flex-column p-0" style={{ listStyle: 'none' }}>
                                     <li>
-                                        <span><FontAwesomeIcon icon={faLocationDot} className="me-2" />{contact.address}</span> 
+                                        <span><FontAwesomeIcon icon={faLocationDot} className="locationICON me-2" />{contact.address}</span> 
                                     </li>
                                     <li>
-                                        <span><FontAwesomeIcon icon={faPhoneFlip} className="me-2" />{contact.phone}</span> 
+                                        <span><FontAwesomeIcon icon={faPhoneFlip} className="phoneICON me-2" />{contact.phone}</span> 
                                     </li>
                                     <li>
-                                        <span><FontAwesomeIcon icon={faEnvelope} className="me-2" />{contact.email}</span>
+                                        <span><FontAwesomeIcon icon={faEnvelope} className="emailICON me-2" />{contact.email}</span>
                                     </li>
                                 </ul>
                             </div>
                             <div className="col-md-4 col-sm-4">
                                 <div className="text-end">
                                     <Link to={`/update/${contact.id}`}>
-                                        <FontAwesomeIcon icon={faPencilAlt} className="me-5" onClick={() => handleEdit(contact.id)}  />
+                                        <FontAwesomeIcon icon={faPencilAlt} className="editBTN me-5" onClick={() => handleEdit(contact.id)}  />
                                     </Link>
-                                    <FontAwesomeIcon icon={faTrashAlt} className="me-2" onClick={() => openModal()} />
+                                    <FontAwesomeIcon icon={faTrashAlt} className="deleteBTN me-2" onClick={ () => openModal(contact.id)} />
                                 </div>
                             </div>
                         </div>
@@ -65,7 +68,7 @@ export const ContactCard = (props) => {
                     </div>
                 )}
             </div>
-            <Modal showmodal={showModal} handleClose={closeModal}/>
+            <Modal showModal={showModal} handlerClose={closeModal} handlerDelete ={ () => {HandlerDelete(contactId)} }/>
         </div>
 	);
 };

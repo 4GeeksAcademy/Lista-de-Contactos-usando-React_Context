@@ -1,8 +1,28 @@
 .btn-success{
     display: flex;
     justify-content: end;
+    margin-top: 8%;
 }
 
+.editBTN{
+    color: black;
+}
+
+.deleteBTN{
+    color: black;
+}
+
+.locationICON{
+    color:gray
+}
+
+.phoneICON{
+    color:gray
+}
+
+.emailICON{
+    color:gray
+}
 .footer{
     background-color: rgba(128, 128, 128, 0.548);
 }
